@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>FREE Crypto Trivia</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+  <h1>✅ FREE Crypto Trivia</h1>
+  <p>Answer 5 questions daily → earn points!</p>
+  <div id="points">Points: 0</div>
+  
+  <button onclick="sendAnswer('Bitcoin')">What’s Bitcoin’s max supply?</button>
+  <button onclick="sendAnswer('Ethereum')">Which chain has lowest fees?</button>
+  
+  <script>
+    const tg = window.Telegram.WebApp;
+    tg.expand();
+    
+    // Load points from Telegram's built-in storage
+    let userData = JSON.parse(tg.initDataUnsafe.user?.user_data || '{}');
+    document.getElementById('points').innerText = `Points: ${userData.points || 0}`;
+    
+    function sendAnswer(answer) {
+      // Update points (example: +10 per answer)
+      userData.points = (userData.points || 0) + 10;
+      
+      // Save to Telegram's storage (no database needed!)
+      tg.sendData(JSON.stringify(userData));
+      
+      // Update UI
+      document.getElementById('points').innerText = `Points: ${userData.points}`;
+    }
+  </script>
+</body>
+</html>
